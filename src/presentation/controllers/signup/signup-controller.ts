@@ -1,5 +1,6 @@
 import { HttpRequest, HttpResponse, Controller, AddParkingLot, BodyRequestValidator } from './signup-protocols'
 import { badRequest, created, serverError } from '../../helpers/http-helper'
+import { EmailInUseError } from '../../errors'
 
 export class SignUpController implements Controller {
   constructor (
@@ -16,6 +17,8 @@ export class SignUpController implements Controller {
       const parkingLotData: { email, password, name, cnpj, address, phone, carCapacity, motorcycleCapacity } = httpRequest.body
 
       const parkingLot = await this.addParkingLot.add(parkingLotData)
+
+      if (!parkingLot) return badRequest(new EmailInUseError())
 
       return created(parkingLot)
     } catch (error) {
