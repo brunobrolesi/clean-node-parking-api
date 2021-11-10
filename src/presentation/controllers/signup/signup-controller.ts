@@ -1,5 +1,5 @@
 import { AddParkingLot } from '../../../domain/usecases/add-parking-lot'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, created, serverError } from '../../helpers/http-helper'
 import { BodyRequestValidator } from '../../protocols/body-request-validator-protocol'
 import { Controller } from '../../protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '../../protocols/http-protocol'
@@ -18,11 +18,9 @@ export class SignUpController implements Controller {
 
       const parkingLotData: { email, password, name, cnpj, address, phone, carCapacity, motorcycleCapacity } = httpRequest.body
 
-      await this.addParkingLot.add(parkingLotData)
+      const parkingLot = await this.addParkingLot.add(parkingLotData)
 
-      return {
-        statusCode: 200
-      }
+      return created(parkingLot)
     } catch (error) {
       return serverError()
     }
