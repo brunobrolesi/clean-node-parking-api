@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/brunobrolesi/clean-node-parking-api/issues"
   },
-  "homepage": "https://github.com/brunobrolesi/clean-node-parking-api#readme"
+  "homepage": "https://github.com/brunobrolesi/clean-node-parking-api#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.2.8"
+  }
 }
