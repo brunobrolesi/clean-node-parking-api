@@ -1,6 +1,7 @@
 import { HttpRequest, BodyRequestValidator, AddParkingLot, AddParkingLotModel } from './signup-protocols'
 import { ParkingLotModel } from '../../../domain/models/parking-lot-model'
 import { SignUpController } from './signup-controller'
+import { EmailInUseError } from '../../errors/email-in-use-error'
 
 const makeBodyRequestValidator = (): BodyRequestValidator => {
   class SignUpBodyRequestValidatorStub implements BodyRequestValidator {
@@ -91,6 +92,14 @@ describe('SignUp Controller', () => {
     const httpRequest = makeHttpRequest()
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  it('Should returns 400 and email already in use error message if AddParkingLot returns null', async () => {
+    const { sut, addParkingLotStub } = makeSut()
+    jest.spyOn(addParkingLotStub, 'add').mockResolvedValueOnce(null)
+    const httpResponse = await sut.handle(makeHttpRequest())
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new EmailInUseError().message)
   })
 
   it('Should returns 500 and internal server error message if AddParkingLot throws', async () => {
