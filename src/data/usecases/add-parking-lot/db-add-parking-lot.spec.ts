@@ -1,5 +1,6 @@
 import { ParkingLotModel } from '../../../domain/models/parking-lot-model'
 import { AddParkingLotModel } from '../../../domain/usecases/add-parking-lot'
+import { Hasher } from '../../protocols/cryptography/hasher'
 import { AddParkingLotRepository } from '../../protocols/db/add-parking-lot-repository'
 import { LoadParkingLotByEmailRepository } from '../../protocols/db/load-parking-lot-by-email-repository'
 import { DbAddParkingLot } from './db-add-parking-lot'
@@ -12,6 +13,16 @@ const makeLoadParkingLotByEmailRepository = (): LoadParkingLotByEmailRepository 
   }
 
   return new LoadParkingLotByEmailRepositoryStub()
+}
+
+const makeHasher = (): Hasher => {
+  class HasherStub implements Hasher {
+    hash (password: string): string {
+      return 'hashed_password'
+    }
+  }
+
+  return new HasherStub()
 }
 
 const makeAddParkingLotRepository = (): AddParkingLotRepository => {
@@ -27,16 +38,19 @@ const makeAddParkingLotRepository = (): AddParkingLotRepository => {
 interface SutTypes {
   sut: DbAddParkingLot
   loadParkingLotByEmailRepositoryStub: LoadParkingLotByEmailRepository
+  hasherStub: Hasher
   addParkingLotRepositoryStub: AddParkingLotRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadParkingLotByEmailRepositoryStub = makeLoadParkingLotByEmailRepository()
+  const hasherStub = makeHasher()
   const addParkingLotRepositoryStub = makeAddParkingLotRepository()
-  const sut = new DbAddParkingLot(loadParkingLotByEmailRepositoryStub, addParkingLotRepositoryStub)
+  const sut = new DbAddParkingLot(loadParkingLotByEmailRepositoryStub, hasherStub, addParkingLotRepositoryStub)
   return {
     sut,
     loadParkingLotByEmailRepositoryStub,
+    hasherStub,
     addParkingLotRepositoryStub
   }
 }
@@ -86,10 +100,17 @@ describe('DbAddParkingLot UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  it('Should call Hasher with correct password', async () => {
+    const { sut, hasherStub } = makeSut()
+    const hashSpy = jest.spyOn(hasherStub, 'hash')
+    await sut.add(makeFakeParkingLotData())
+    expect(hashSpy).toHaveBeenCalledWith(makeFakeParkingLotData().password)
+  })
+
   it('Should call AddParkingLotRepository with correct values', async () => {
     const { sut, addParkingLotRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addParkingLotRepositoryStub, 'add')
     await sut.add(makeFakeParkingLotData())
-    expect(addSpy).toHaveBeenCalledWith(makeFakeParkingLotData())
+    expect(addSpy).toHaveBeenCalledWith({ ...makeFakeParkingLotData(), password: 'hashed_password' })
   })
 })
