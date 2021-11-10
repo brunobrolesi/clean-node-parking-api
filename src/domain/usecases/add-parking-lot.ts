@@ -1,6 +1,8 @@
 import { ParkingLotModel } from '../models/parking-lot-model'
 
 export interface AddParkingLotModel {
+  email: string
+  password: string
   name: string
   cnpj: string
   address: string

@@ -19,6 +19,8 @@ const makeAddParkingLot = (): AddParkingLot => {
     async add (parkingLotData: AddParkingLotModel): Promise<ParkingLotModel> {
       const fakeParkingLot = {
         id: 'any_id',
+        email: 'any_email',
+        password: 'any_password',
         name: 'any_name',
         cnpj: 'any_cnpj',
         address: 'any_address',
@@ -53,6 +55,9 @@ const makeSut = (): SutTypes => {
 
 const makeHttpRequest = (): HttpRequest => ({
   body: {
+    email: 'any_email',
+    password: 'any_password',
+    passwordConfirmation: 'any_password',
     name: 'any_name',
     cnpj: 'any_cnpj',
     address: 'any_address',

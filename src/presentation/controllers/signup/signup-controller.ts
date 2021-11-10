@@ -16,7 +16,7 @@ export class SignUpController implements Controller {
 
       if (error) return badRequest(error)
 
-      const parkingLotData: { name, cnpj, address, phone, carCapacity, motorcycleCapacity } = httpRequest.body
+      const parkingLotData: { email, password, name, cnpj, address, phone, carCapacity, motorcycleCapacity } = httpRequest.body
 
       await this.addParkingLot.add(parkingLotData)
 
