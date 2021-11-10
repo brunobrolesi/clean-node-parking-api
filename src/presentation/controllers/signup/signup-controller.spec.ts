@@ -87,4 +87,13 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
+  it('Should returns 500 and internal server error message if AddParkingLot throws', async () => {
+    const { sut, addParkingLotStub } = makeSut()
+    jest.spyOn(addParkingLotStub, 'add').mockRejectedValueOnce(new Error())
+    const httpRequest = makeHttpRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body.error).toBe('internal server error')
+  })
 })
