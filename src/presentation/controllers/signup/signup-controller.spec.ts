@@ -1,5 +1,5 @@
-import { BodyRequestValidator } from '../../protocols/body-request-validator'
-import { httpRequest } from '../../protocols/http-protocol'
+import { BodyRequestValidator } from '../../protocols/body-request-validator-protocol'
+import { HttpRequest } from '../../protocols/http-protocol'
 import { SignUpController } from './signup-controller'
 
 const makeBodyRequestValidator = (): BodyRequestValidator => {
@@ -27,7 +27,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const makeHttpRequest = (): httpRequest => ({
+const makeHttpRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
     cnpj: 'any_cnpj',
