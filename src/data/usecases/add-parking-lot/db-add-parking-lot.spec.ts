@@ -107,6 +107,13 @@ describe('DbAddParkingLot UseCase', () => {
     expect(hashSpy).toHaveBeenCalledWith(makeFakeParkingLotData().password)
   })
 
+  it('Should throw if Hasher throws', async () => {
+    const { sut, hasherStub } = makeSut()
+    jest.spyOn(hasherStub, 'hash').mockImplementationOnce(() => { throw new Error() })
+    const promise = sut.add(makeFakeParkingLotData())
+    await expect(promise).rejects.toThrow()
+  })
+
   it('Should call AddParkingLotRepository with correct values', async () => {
     const { sut, addParkingLotRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addParkingLotRepositoryStub, 'add')
