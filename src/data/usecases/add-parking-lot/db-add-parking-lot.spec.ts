@@ -127,4 +127,10 @@ describe('DbAddParkingLot UseCase', () => {
     const promise = sut.add(makeFakeParkingLotData())
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should return return parking lot in AddParkingLotRepository success', async () => {
+    const { sut } = makeSut()
+    const parkingLot = await sut.add(makeFakeParkingLotData())
+    expect(parkingLot).toEqual(makeFakeParkingLotModel())
+  })
 })
