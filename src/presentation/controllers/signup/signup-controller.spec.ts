@@ -1,7 +1,5 @@
+import { HttpRequest, BodyRequestValidator, AddParkingLot, AddParkingLotModel } from './signup-protocols'
 import { ParkingLotModel } from '../../../domain/models/parking-lot-model'
-import { AddParkingLot, AddParkingLotModel } from '../../../domain/usecases/add-parking-lot'
-import { BodyRequestValidator } from '../../protocols/body-request-validator-protocol'
-import { HttpRequest } from '../../protocols/http-protocol'
 import { SignUpController } from './signup-controller'
 
 const makeBodyRequestValidator = (): BodyRequestValidator => {

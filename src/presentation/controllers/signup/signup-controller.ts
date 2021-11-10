@@ -1,8 +1,5 @@
-import { AddParkingLot } from '../../../domain/usecases/add-parking-lot'
+import { HttpRequest, HttpResponse, Controller, AddParkingLot, BodyRequestValidator } from './signup-protocols'
 import { badRequest, created, serverError } from '../../helpers/http-helper'
-import { BodyRequestValidator } from '../../protocols/body-request-validator-protocol'
-import { Controller } from '../../protocols/controller-protocol'
-import { HttpRequest, HttpResponse } from '../../protocols/http-protocol'
 
 export class SignUpController implements Controller {
   constructor (
