@@ -64,4 +64,11 @@ describe('DbAddParkingLot UseCase', () => {
     const parking = await sut.add(makeFakeParkingLotData())
     expect(parking).toBeNull()
   })
+
+  it('Should throws if LoadParkingLotByEmailRepository throws', async () => {
+    const { sut, loadParkingLotByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadParkingLotByEmailRepositoryStub, 'loadByEmail').mockRejectedValueOnce(new Error())
+    const promise = sut.add(makeFakeParkingLotData())
+    await expect(promise).rejects.toThrow()
+  })
 })
