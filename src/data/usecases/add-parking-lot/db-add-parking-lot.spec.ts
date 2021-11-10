@@ -120,4 +120,11 @@ describe('DbAddParkingLot UseCase', () => {
     await sut.add(makeFakeParkingLotData())
     expect(addSpy).toHaveBeenCalledWith({ ...makeFakeParkingLotData(), password: 'hashed_password' })
   })
+
+  it('Should throw if AddParkingLotRepository throws', async () => {
+    const { sut, addParkingLotRepositoryStub } = makeSut()
+    jest.spyOn(addParkingLotRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(makeFakeParkingLotData())
+    await expect(promise).rejects.toThrow()
+  })
 })
