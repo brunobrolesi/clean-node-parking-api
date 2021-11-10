@@ -8,7 +8,9 @@ export class SignUpController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    this.bodyRequestValidator.validate(httpRequest.body)
+    const error = this.bodyRequestValidator.validate(httpRequest.body)
+
+    if (error) return { statusCode: 400, body: { error: error.message } }
 
     return {
       statusCode: 200
