@@ -46,4 +46,13 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
     expect(validatorSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
+  it('Should returns 400 and error message if BodyRequestValidator returns an error', async () => {
+    const { sut, bodyValidator } = makeSut()
+    jest.spyOn(bodyValidator, 'validate').mockReturnValueOnce(new Error('missing field'))
+    const httpRequest = makeHttpRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe('missing field')
+  })
 })
