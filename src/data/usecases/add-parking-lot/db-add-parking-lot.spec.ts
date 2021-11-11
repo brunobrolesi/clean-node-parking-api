@@ -1,9 +1,5 @@
-import { ParkingLotModel } from '../../../domain/models/parking-lot-model'
-import { AddParkingLotModel } from '../../../domain/usecases/add-parking-lot'
-import { Hasher } from '../../protocols/cryptography/hasher'
-import { AddParkingLotRepository } from '../../protocols/db/add-parking-lot-repository'
-import { LoadParkingLotByEmailRepository } from '../../protocols/db/load-parking-lot-by-email-repository'
 import { DbAddParkingLot } from './db-add-parking-lot'
+import { ParkingLotModel, AddParkingLotModel, Hasher, AddParkingLotRepository, LoadParkingLotByEmailRepository } from './db-add-parking-lot-protocols'
 
 const makeLoadParkingLotByEmailRepository = (): LoadParkingLotByEmailRepository => {
   class LoadParkingLotByEmailRepositoryStub implements LoadParkingLotByEmailRepository {
