@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/brunobrolesi/clean-node-parking-api#readme",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.7",
@@ -45,6 +46,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.4.2",
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1"
   }
 }

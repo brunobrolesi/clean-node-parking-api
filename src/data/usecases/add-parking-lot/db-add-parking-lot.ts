@@ -11,7 +11,7 @@ export class DbAddParkingLot implements AddParkingLot {
 
     if (hasAccount) return null
 
-    const hashedPassword = this.hasher.hash(parkingLotData.password)
+    const hashedPassword = await this.hasher.hash(parkingLotData.password)
 
     return await this.addParkingLotRepository.add({ ...parkingLotData, password: hashedPassword })
   }
