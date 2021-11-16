@@ -69,9 +69,7 @@ const makeFakeParkingLotModel = (): ParkingLotModel => ({
   name: 'any_name',
   cnpj: 'any_cnpj',
   address: 'any_address',
-  phone: 'any_phone',
-  carCapacity: 20,
-  motorcycleCapacity: 20
+  phone: 'any_phone'
 })
 
 describe('DbAddParkingLot UseCase', () => {
