@@ -61,6 +61,13 @@ describe('PostgreSqlParkingLot Repository', () => {
     expect(createSpy).toHaveBeenCalledWith({ data: makeFakeParkingLotCreateInputData() })
   })
 
+  it('Should throw if parking lot creation throws', async () => {
+    const { sut, prisma } = makeSut()
+    jest.spyOn(prisma.parkingLot, 'create').mockRejectedValueOnce(new Error())
+    const promise = sut.add(makeFakeParkingLotData())
+    await expect(promise).rejects.toThrow()
+  })
+
   it('Should returns an parking lot on parking lot creation success', async () => {
     const { sut, prisma } = makeSut()
     jest.spyOn(prisma.parkingLot, 'create').mockResolvedValueOnce(makeFakeParkingLotModel())
