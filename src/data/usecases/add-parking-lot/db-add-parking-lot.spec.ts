@@ -13,8 +13,8 @@ const makeLoadParkingLotByEmailRepository = (): LoadParkingLotByEmailRepository 
 
 const makeHasher = (): Hasher => {
   class HasherStub implements Hasher {
-    hash (password: string): string {
-      return 'hashed_password'
+    async hash (password: string): Promise<string> {
+      return await new Promise(resolve => resolve('hashed_password'))
     }
   }
 
@@ -103,7 +103,7 @@ describe('DbAddParkingLot UseCase', () => {
 
   it('Should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut()
-    jest.spyOn(hasherStub, 'hash').mockImplementationOnce(() => { throw new Error() })
+    jest.spyOn(hasherStub, 'hash').mockRejectedValueOnce(new Error())
     const promise = sut.add(makeFakeParkingLotData())
     await expect(promise).rejects.toThrow()
   })
