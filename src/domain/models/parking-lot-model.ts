@@ -6,6 +6,4 @@ export interface ParkingLotModel {
   cnpj: string
   address: string
   phone: string
-  carCapacity: number
-  motorcycleCapacity: number
 }

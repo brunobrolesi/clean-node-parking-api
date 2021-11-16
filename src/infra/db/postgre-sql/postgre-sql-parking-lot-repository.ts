@@ -8,7 +8,7 @@ export class PostgreSqlParkingLotRepository implements AddParkingLotRepository {
 
   async add (parkingLotData: AddParkingLotModel): Promise<ParkingLotModel> {
     const { carCapacity, motorcycleCapacity, ...data } = parkingLotData
-    const parkingLot: Prisma.ParkingLotCreateInput = {
+    const parkingLotInput: Prisma.ParkingLotCreateInput = {
       ...data,
       status: {
         create: {
@@ -17,9 +17,6 @@ export class PostgreSqlParkingLotRepository implements AddParkingLotRepository {
         }
       }
     }
-    await this.prisma.parkingLot.create({
-      data: parkingLot
-    })
-    return null
+    return await this.prisma.parkingLot.create({ data: parkingLotInput })
   }
 }
