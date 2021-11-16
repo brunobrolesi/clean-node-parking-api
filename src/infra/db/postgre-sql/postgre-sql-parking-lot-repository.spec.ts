@@ -54,24 +54,55 @@ const makeFakeParkingLotCreateInputData = (): Prisma.ParkingLotCreateInput => {
 }
 
 describe('PostgreSqlParkingLot Repository', () => {
-  it('Should call prisma client parking lot creation with correct vales', async () => {
-    const { sut, prisma } = makeSut()
-    const createSpy = jest.spyOn(prisma.parkingLot, 'create')
-    await sut.add(makeFakeParkingLotData())
-    expect(createSpy).toHaveBeenCalledWith({ data: makeFakeParkingLotCreateInputData() })
-  })
+  describe('add', () => {
+    it('Should call prisma client parking lot creation with correct values', async () => {
+      const { sut, prisma } = makeSut()
+      const createSpy = jest.spyOn(prisma.parkingLot, 'create')
+      await sut.add(makeFakeParkingLotData())
+      expect(createSpy).toHaveBeenCalledWith({ data: makeFakeParkingLotCreateInputData() })
+    })
 
-  it('Should throw if parking lot creation throws', async () => {
-    const { sut, prisma } = makeSut()
-    jest.spyOn(prisma.parkingLot, 'create').mockRejectedValueOnce(new Error())
-    const promise = sut.add(makeFakeParkingLotData())
-    await expect(promise).rejects.toThrow()
-  })
+    it('Should throw if parking lot creation throws', async () => {
+      const { sut, prisma } = makeSut()
+      jest.spyOn(prisma.parkingLot, 'create').mockRejectedValueOnce(new Error())
+      const promise = sut.add(makeFakeParkingLotData())
+      await expect(promise).rejects.toThrow()
+    })
 
-  it('Should returns an parking lot on parking lot creation success', async () => {
-    const { sut, prisma } = makeSut()
-    jest.spyOn(prisma.parkingLot, 'create').mockResolvedValueOnce(makeFakeParkingLotModel())
-    const parkingLot = await sut.add(makeFakeParkingLotData())
-    expect(parkingLot).toEqual(makeFakeParkingLotModel())
+    it('Should returns an parking lot on parking lot creation success', async () => {
+      const { sut, prisma } = makeSut()
+      jest.spyOn(prisma.parkingLot, 'create').mockResolvedValueOnce(makeFakeParkingLotModel())
+      const parkingLot = await sut.add(makeFakeParkingLotData())
+      expect(parkingLot).toEqual(makeFakeParkingLotModel())
+    })
+  })
+  describe('loadByEmail', () => {
+    it('Should call prisma client with correct email', async () => {
+      const { sut, prisma } = makeSut()
+      const findSpy = jest.spyOn(prisma.parkingLot, 'findUnique')
+      await sut.loadByEmail('any_email')
+      expect(findSpy).toHaveBeenCalledWith({ where: { email: 'any_email' } })
+    })
+
+    it('Should throw if findUnique throws', async () => {
+      const { sut, prisma } = makeSut()
+      jest.spyOn(prisma.parkingLot, 'findUnique').mockRejectedValueOnce(new Error())
+      const promise = sut.loadByEmail('any_email')
+      await expect(promise).rejects.toThrow()
+    })
+
+    it('Should returns an parking lot on success', async () => {
+      const { sut, prisma } = makeSut()
+      jest.spyOn(prisma.parkingLot, 'findUnique').mockResolvedValueOnce(makeFakeParkingLotModel())
+      const parkingLot = await sut.loadByEmail('any_email')
+      expect(parkingLot).toEqual(makeFakeParkingLotModel())
+    })
+
+    it('Should returns null if not found parking lot', async () => {
+      const { sut, prisma } = makeSut()
+      jest.spyOn(prisma.parkingLot, 'findUnique').mockResolvedValueOnce(null)
+      const parkingLot = await sut.loadByEmail('any_email')
+      expect(parkingLot).toBeNull()
+    })
   })
 })
