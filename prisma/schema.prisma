@@ -25,10 +25,10 @@ model ParkingLot {
 
 model Status {
   id                    String        @id @default(uuid())
-  carCapacity           Int       
-  motorcycleCapacity    Int
-  carOccupancy          Int
-  motorcycleOccupancy   Int
+  carCapacity           Int           @default(0)
+  motorcycleCapacity    Int           @default(0)
+  carOccupancy          Int?          @default(0)
+  motorcycleOccupancy   Int?          @default(0)
   parkingLot            ParkingLot    @relation(fields: [parkingLotId], references: [id])
   parkingLotId          String
 }
